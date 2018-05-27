@@ -9,6 +9,9 @@
 
 use std::{ops, borrow, hash, fmt, iter::{Sum, Iterator,},};
 
+extern crate serde;
+#[macro_use] extern crate serde_derive;
+
 #[cfg(test)] mod tests;
 mod traits;
 
@@ -22,6 +25,7 @@ pub const X_UNIT: Pos = Pos::new(1, 0);
 pub const Y_UNIT: Pos = Pos::new(0, 1);
 
 /// A 2D coordinate.
+#[derive(PartialEq, Eq, Serialize, Deserialize,)]
 pub struct Pos<T = i32> {
     pub x: T,
     pub y: T,
@@ -103,15 +107,6 @@ impl<T> Default for Pos<T>
     where T: Default {
     fn default() -> Self { Self::new(T::default(), T::default()) }
 }
-
-impl<T> PartialEq for Pos<T>
-    where T: PartialEq {
-    fn eq(&self, rhs: &Self) -> bool {
-        self.x == rhs.x && self.y == rhs.y
-    }
-}
-
-impl<T> Eq for Pos<T> where T: Eq {}
 
 impl<T> ops::Neg for Pos<T>
     where T: ops::Neg {
