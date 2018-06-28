@@ -9,12 +9,18 @@
 
 use std::{ops, borrow, hash, fmt, iter::{Sum, Iterator,},};
 
+#[cfg(feature = "pos-serde")]
 extern crate serde;
-#[macro_use] extern crate serde_derive;
+#[cfg(feature = "pos-serde")]
+#[macro_use]
+extern crate serde_derive;
 
 #[cfg(test)] mod tests;
 mod traits;
 
+#[cfg(feature = "pos-serde")]
+pub use self::serde::*;
+#[cfg(feature = "traits")]
 pub use self::traits::*;
 
 /// The origin of the coordinate system.
@@ -25,7 +31,8 @@ pub const X_UNIT: Pos = Pos::new(1, 0);
 pub const Y_UNIT: Pos = Pos::new(0, 1);
 
 /// A 2D coordinate.
-#[derive(PartialEq, Eq, Serialize, Deserialize,)]
+#[derive(PartialEq, Eq,)]
+#[cfg_attr(feature = "pos-serde", derive(Serialize, Deserialize,))]
 pub struct Pos<T = i32> {
     pub x: T,
     pub y: T,

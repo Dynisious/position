@@ -3,6 +3,10 @@ name = "position"
 version = "0.1.0"
 authors = ["Dynisious <daniel.bechaz@gmail.com>"]
 
+[features]
+pos-serde = ["serde", "serde_derive",]
+traits = []
+
 [dependencies]
-serde = "*"
-serde_derive = "*"
+serde = { version = "*", optional = true }
+serde_derive = { version = "*", optional = true }

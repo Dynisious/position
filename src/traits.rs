@@ -1,4 +1,6 @@
 
+#![cfg(feature = "traits")]
+
 use super::Pos;
 use std::ops::AddAssign;
 use std::borrow::{Borrow, BorrowMut,};
