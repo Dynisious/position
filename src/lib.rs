@@ -7,7 +7,7 @@
 
 #![feature(const_fn)]
 
-use std::{ops, borrow, hash, fmt, iter::{Sum, Iterator,},};
+use std::{ops, borrow, hash, fmt, iter::{Sum, Iterator,}, ops::Add,};
 
 #[cfg(feature = "pos-serde")]
 extern crate serde;
@@ -24,16 +24,23 @@ pub use self::serde::*;
 pub use self::traits::*;
 
 /// The origin of the coordinate system.
-pub const ORIGIN: Pos = Pos::new(0, 0);
+pub fn origin<T>() -> Pos<T>
+    where T: Default, { Pos::new(T::default(), T::default()) }
 /// The unit vector of the X axis.
-pub const X_UNIT: Pos = Pos::new(1, 0);
+pub fn x_unit<T>() -> Pos<T>
+    where T: Default + Add<Output = T> + From<usize>, {
+    Pos::new(T::default() + 1.into(), T::default())
+}
 /// The unit vector of the Y axis.
-pub const Y_UNIT: Pos = Pos::new(0, 1);
+pub fn y_unit<T>() -> Pos<T>
+    where T: Default + Add<Output = T> + From<usize>, {
+    Pos::new(T::default(), T::default() + 1.into())
+}
 
 /// A 2D coordinate.
 #[derive(PartialEq, Eq,)]
 #[cfg_attr(feature = "pos-serde", derive(Serialize, Deserialize,))]
-pub struct Pos<T = i32> {
+pub struct Pos<T = isize> {
     pub x: T,
     pub y: T,
 }
