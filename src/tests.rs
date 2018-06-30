@@ -1,4 +1,6 @@
 
+#![cfg(test)]
+
 use super::*;
 
 #[test]
@@ -39,4 +41,10 @@ fn test_pos_arithmetic() {
     assert_eq!(temp, two, "`Pos::mul_assign` failed.");
     temp /= 2;
     assert_eq!(temp, one, "`Pos::div_assign` failed.");
+}
+
+#[cfg(feature = "pos-rand")]
+#[test]
+fn test_pos_rand() {
+    Pos::<isize>::random();
 }

@@ -1,9 +1,7 @@
 //! A 2D coordinate system.
 //! 
-//! Use `pos` feature to access.
-//! 
 //! Author --- daniel.bechaz@gmail.com  
-//! Last Modified --- 2018/05/19
+//! Last Modified --- 2018/06/30
 
 #![feature(const_fn)]
 
@@ -14,12 +12,13 @@ extern crate serde;
 #[cfg(feature = "pos-serde")]
 #[macro_use]
 extern crate serde_derive;
+#[cfg(feature = "pos-rand")]
+extern crate rand as ext_rand;
 
-#[cfg(test)] mod tests;
 mod traits;
+pub mod rand;
+mod tests;
 
-#[cfg(feature = "pos-serde")]
-pub use self::serde::*;
 #[cfg(feature = "traits")]
 pub use self::traits::*;
 
@@ -38,7 +37,7 @@ pub fn y_unit<T>() -> Pos<T>
 }
 
 /// A 2D coordinate.
-#[derive(PartialEq, Eq,)]
+#[derive(PartialEq, Eq, Clone, Copy,)]
 #[cfg_attr(feature = "pos-serde", derive(Serialize, Deserialize,))]
 pub struct Pos<T = isize> {
     pub x: T,
@@ -108,18 +107,19 @@ impl<T> Pos<T>
     }
 }
 
-impl<T> Clone for Pos<T>
-    where T: Clone {
-    fn clone(&self) -> Self {
-        Self::new(self.x.clone(), self.y.clone())
-    }
-}
-
-impl<T> Copy for Pos<T> where T: Copy {}
-
 impl<T> Default for Pos<T>
     where T: Default {
     fn default() -> Self { Self::new(T::default(), T::default()) }
+}
+
+impl<T> From<(T, T)> for Pos<T> {
+    #[inline]
+    fn from((x, y): (T, T)) -> Self { Self::new(x, y) }
+}
+
+impl<T> Into<(T, T)> for Pos<T> {
+    #[inline]
+    fn into(self) -> (T, T) { (self.x, self.y) }
 }
 
 impl<T> ops::Neg for Pos<T>
