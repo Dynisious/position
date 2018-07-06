@@ -7,7 +7,7 @@ use std::borrow::{Borrow, BorrowMut,};
 
 /// A `GetPos` type is something which can be considered to have a position in a 2D
 /// coordinate space.
-pub trait GetPos<T = i32>: Sized {
+pub trait GetPos<T = isize>: Sized {
     /// Returns the position of `self`.
     fn get_position(&self) -> Pos<T>;
 }
@@ -20,7 +20,7 @@ impl<Type, T> GetPos<T> for Type
 
 /// A `Positioned` type is something which can be considered to have a dynamic position
 /// in a 2D coordinate space.
-pub trait Positioned<T = i32>: GetPos<T>
+pub trait Positioned<T = isize>: GetPos<T>
     where T: AddAssign {
     /// Sets the position of `self`.
     fn set_position(self, pos: Pos<T>) -> Self;
@@ -44,7 +44,7 @@ mod tests {
 
     #[test]
     fn test_traits() {
-        let pos = Pos::<i32>::default();
+        let pos = Pos::default();
         let other = Pos::new(1, 2);
 
         assert_eq!(pos.get_position(), Pos::default(), "`Positioned::get_position` failed.");
