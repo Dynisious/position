@@ -1,10 +1,10 @@
-//! Provides implementations for generating random `Pos` values using the
-//! [`rand`](https://crates.io/crates/rand) crate.
+//! Provides implementations for generating random [`Pos`] values using the
+//! [`rand`] crate.
 //! 
 //! Gated by the `pos-rand` feature.
 //! 
 //! Author --- daniel.bechaz@gmail.com  
-//! Last Modified --- 2018/06/30
+//! Last Modified --- 2018/07/16
 
 #![cfg(feature = "pos-rand")]
 
@@ -21,9 +21,9 @@ impl<T> Pos<T>
     }
 }
 
-/// A [`Distribution`](https://docs.rs/rand/0.5.3/rand/distributions/trait.Distribution.html)
+/// A [`Distribution`]
 /// for generating `Pos<T>` values where there is an implementation of
-/// [`Standard`](https://docs.rs/rand/0.5.3/rand/distributions/struct.Standard.html) for `T`.
+/// [`Standard`] for `T`.
 pub struct Standard;
 
 impl<T> Distribution<Pos<T>> for Standard
@@ -33,9 +33,9 @@ impl<T> Distribution<Pos<T>> for Standard
     }
 }
 
-/// A [`Distribution`](https://docs.rs/rand/0.5.3/rand/distributions/trait.Distribution.html)
+/// A [`Distribution`]
 /// for generating `Pos<T>` values where there is an implementation of
-/// [`StandardNormal`](https://docs.rs/rand/0.5.3/rand/distributions/struct.StandardNormal.html) for `T`.
+/// [`StandardNormal`] for `T`.
 pub struct StandardNormal;
 
 impl<T> Distribution<Pos<T>> for StandardNormal
@@ -45,5 +45,15 @@ impl<T> Distribution<Pos<T>> for StandardNormal
             rng.sample(distributions::StandardNormal),
             rng.sample(distributions::StandardNormal)
         )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_pos_rand() {
+        Pos::<isize>::random();
     }
 }

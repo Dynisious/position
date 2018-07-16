@@ -1,7 +1,7 @@
 //! A 2D coordinate system.
 //! 
 //! Author --- daniel.bechaz@gmail.com  
-//! Last Modified --- 2018/06/30
+//! Last Modified --- 2018/07/16
 
 #![feature(const_fn)]
 
@@ -21,6 +21,7 @@ extern crate rand as ext_rand;
 mod traits;
 pub mod rand;
 mod tests;
+mod pos_serde;
 
 #[cfg(feature = "traits")]
 pub use self::traits::*;
@@ -46,24 +47,24 @@ impl<T> Pos<T> {
 
 impl<T> Pos<T>
     where T: ops::Mul<Output = T> + ops::Add<Output = T> {
-    /// Calculates the dot product of the two `Pos` values.
+    /// Calculates the dot product of the two [`Pos`] values.
     pub fn dot(a: Self, b: Self) -> T { (a.x * b.x) + (a.y * b.y) }
 }
 
 impl<T> Pos<T>
     where T: Clone + ops::Mul<Output = T> + ops::Add<Output = T> {
-    /// Calculates the squared magniuted of this `Pos`.
+    /// Calculates the squared magniuted of this [`Pos`].
     pub fn mag2(self) -> T { Self::dot(self.clone(), self) }
 }
 
 impl<T> Pos<T>
     where T: Clone + ops::Mul<Output = T> + ops::Add<Output = T>
          + ops::Sub<Output = T> {
-    /// Calculates the squared distance between this `Pos` and another.
+    /// Calculates the squared distance between this [`Pos`] and another.
     /// 
     /// # Params
     /// 
-    /// pos --- The `Pos` value to get the distance too.
+    /// pos --- The [`Pos`] value to get the distance too.
     pub fn dist2_from(self, pos: Self) -> T { (pos - self).mag2() }
 }
 
@@ -194,7 +195,7 @@ impl<T, RHS> ops::DivAssign<RHS> for Pos<T>
 }
 
 macro_rules! index_panic {
-    ($index:expr) => (panic!("Index to `Pos` must be 0 (x) or 1 (y) gave {}.", $index))
+    ($index:expr) => (panic!("Index to [`Pos`] must be 0 (x) or 1 (y) gave {}.", $index))
 }
 
 impl<T> ops::Index<usize> for Pos<T> {

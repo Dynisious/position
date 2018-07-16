@@ -1,3 +1,9 @@
+//! Provides traits for making use of [`Pos`] values with other types.
+//! 
+//! Gated by the `traits` feature.
+//! 
+//! Author --- daniel.bechaz@gmail.com  
+//! Last Modified --- 2018/07/16
 
 #![cfg(feature = "traits")]
 
@@ -5,8 +11,8 @@ use super::Pos;
 use std::ops::AddAssign;
 use std::borrow::{Borrow, BorrowMut,};
 
-/// A `GetPos` type is something which can be considered to have a position in a 2D
-/// coordinate space.
+/// An implementor of `GetPos` is a type which can be considered to have a position in a
+/// 2D coordinate space.
 pub trait GetPos<T = isize>: Sized {
     /// Returns the position of `self`.
     fn get_position(&self) -> Pos<T>;
@@ -18,8 +24,8 @@ impl<Type, T> GetPos<T> for Type
     fn get_position(&self) -> Pos<T> { self.borrow().clone() }
 }
 
-/// A `Positioned` type is something which can be considered to have a dynamic position
-/// in a 2D coordinate space.
+/// An implementor of `GetPos` is a type which can be considered to have a dynamic
+/// position in a 2D coordinate space.
 pub trait Positioned<T = isize>: GetPos<T>
     where T: AddAssign {
     /// Sets the position of `self`.
